@@ -61,6 +61,23 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="user_phone" class="col-md-4 col-form-label text-md-end">{{ __('Nomor Telepon') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="user_phone" type="text" class="form-control" name="user_phone" required autocomplete="user_phone">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="user_address" class="col-md-4 col-form-label text-md-end">{{ __('Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="user_address" type="text" class="form-control" name="user_address" required autocomplete="user_address">
+                            </div>
+                        </div>
+
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

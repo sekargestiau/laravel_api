@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
@@ -53,6 +55,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'user_phone' => ['required', 'string'],
+            'user_address' => ['required', 'string'],
         ]);
     }
 
@@ -64,10 +68,57 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $data['user_type'] = 'user';
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'user_phone' => $data['user_phone'],
+            'user_address' => $data['user_address'],
+            'user_type' => $data['user_type'],
         ]);
     }
+
+    // function register for API
+    protected function registerApi(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+            'user_phone' => ['required', 'string'],
+            'user_address' => ['required', 'string'],
+        ]);
+
+        if ($validated->fails()) {
+            $failed = $validated->errors()->all();
+            return response()->json([
+                'error' => 500,
+                'message' => $failed
+            ]);
+        } else {
+            // Menambahkan 'user_type' ke dalam data yang akan disimpan
+            $data = $request->all();
+            $data['user_type'] = 'user';
+
+            $user = User::create(array_merge($data, [
+                'password' => bcrypt($request->password)
+            ]));
+
+            if ($user) {
+                return response()->json([
+                    'success' => 201,
+                    'message' => 'YOUR REGISTRATION IS SUCCESSFUL!',
+                    'user' => $user
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 500,
+                    'message' => 'YOUR REGISTRATION IS FAILED!',
+                ]);
+            }
+        }
+    }
+
 }
