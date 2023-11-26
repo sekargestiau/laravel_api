@@ -114,7 +114,7 @@ class RegisterController extends Controller
                 ]);
             } else {
                 return response()->json([
-                    'error' => 500,
+                    'fail' => 500,
                     'message' => 'YOUR REGISTRATION IS FAILED!',
                 ]);
             }

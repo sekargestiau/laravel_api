@@ -25,4 +25,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function indexApi(){
+        $user = auth()->user();
+
+        return response()->json([
+            'success' => 200,
+            'message' => 'Data successfully retrieved!',
+            'data' => $user,
+        ], 200);
+    }
 }

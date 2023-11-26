@@ -50,12 +50,25 @@ class LoginController extends Controller
         if(Auth::attempt($loginData)) {
             $token = Auth::user()->createToken('authToken')->plainTextToken;
             return response()->json([
+                'success' => '200',
                 'data' => Auth::user(), 
                 'token'=> $token,
             ], 200);
         }
         return response()->json([
+            'error' => '401',
             'messages' => 'Invalid credentials',
         ], 401);
     }
+
+    public function logoutApi(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout successful!',
+        ]);
+    }
+
 }
