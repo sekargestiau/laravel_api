@@ -18,7 +18,7 @@ class AuthenticationController extends Controller
      * Display a listing of the resource.
      */
 
-     // function register for API
+    // function register for API
     protected function registerApi(Request $request)
     {
         $validated = Validator::make($request->all(), [
@@ -32,11 +32,10 @@ class AuthenticationController extends Controller
         if ($validated->fails()) {
             $failed = $validated->errors()->all();
             return response()->json([
-                'error' => 500,
+                'fail' => 500,
                 'message' => $failed
             ]);
         } else {
-            // Menambahkan 'user_type' ke dalam data yang akan disimpan
             $data = $request->all();
             $data['user_type'] = 'user';
 
@@ -75,7 +74,7 @@ class AuthenticationController extends Controller
             ], 200);
         }
         return response()->json([
-            'error' => '401',
+            'fail' => '401',
             'messages' => 'Invalid credentials',
         ], 401);
     }
@@ -86,11 +85,12 @@ class AuthenticationController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'success' => true,
+            'success' => 200,
             'message' => 'Logout successful!',
-        ]);
+        ], 200);
     }
 
+    // function for home page after login
     public function indexApi(){
         $user = auth()->user();
 
