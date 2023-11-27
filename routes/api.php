@@ -25,7 +25,11 @@ Route::get('index', [AuthenticationController::class,'indexApi'])->middleware(['
 Route::get('logout', [AuthenticationController::class,'logoutApi'])->middleware(['auth:sanctum']); // http://127.0.0.1:8000/api/logout
 
 //create
-Route::post('create-waste', [WasteController::class,'store']); // http://127.0.0.1:8000/api/create-waste dan harus middleware
+Route::post('create-waste', [WasteController::class,'store']); // http://127.0.0.1:8000/api/create-waste + middleware
+//update
+Route::patch('update-waste/{id}', [WasteController::class,'update']); // http://127.0.0.1:8000/api/create-waste  + middleware 
+//delete
+Route::delete('delete-waste/{id}', [WasteController::class,'destroy']); // http://127.0.0.1:8000/api/delete-waste  + middleware 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -61,7 +61,15 @@ class WasteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'waste_name'=> 'required',
+            'waste_type'=> 'required',
+            'waste_qty'=> 'required',
+            'pickup_coordinat'=> 'required',
+        ]);
+        $waste = Waste::findOrFail($id);
+        $waste->update($request->all());
+        return response()->json('try update');
     }
 
     /**
@@ -69,6 +77,8 @@ class WasteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $waste = Waste::findOrFail($id);
+        $waste->delete();
+        return response()->json('try delete');
     }
 }
