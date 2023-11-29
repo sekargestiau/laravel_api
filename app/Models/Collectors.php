@@ -9,4 +9,17 @@ class Collectors extends Model
 {
     use HasFactory;
     protected $table = "collectors";
+
+    protected $fillable = [
+        'user_id',
+        'drop_latitude',
+        'drop_longitude',
+        'current_latitude',
+        'current_longitude'
+    ];
+
+    public function collectorsId()
+        {
+        return $this->belongsTo(User::class, 'user_id');
+        }
 }

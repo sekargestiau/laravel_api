@@ -22,6 +22,7 @@ namespace App\Models{
  * @property float $drop_longitude
  * @property float $current_latitude
  * @property float $current_longitude
+ * @property-read \App\Models\User $collectorsId
  * @method static \Illuminate\Database\Eloquent\Builder|Collectors newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Collectors newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Collectors query()

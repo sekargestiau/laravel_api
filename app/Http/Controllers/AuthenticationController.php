@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Collectors;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -48,6 +49,56 @@ class AuthenticationController extends Controller
                     'success' => 201,
                     'message' => 'YOUR REGISTRATION IS SUCCESSFUL!',
                     'user' => $user
+                ]);
+            } else {
+                return response()->json([
+                    'fail' => 500,
+                    'message' => 'YOUR REGISTRATION IS FAILED!',
+                ]);
+            }
+        }
+    }
+
+    // function register for API
+    protected function registerApi_Collector(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            'fname' => ['required', 'string', 'max:255'],
+            'lname' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+            'phone' => ['required', 'string'],
+        ]);
+
+        if ($validated->fails()) {
+            $failed = $validated->errors()->all();
+            return response()->json([
+                'fail' => 500,
+                'message' => $failed
+            ]);
+        } else {
+            $data = $request->all();
+            $data['role'] = 'collector';
+
+            // Membuat pengguna
+            $user = User::create(array_merge($data, [
+                'password' => bcrypt($request->password)
+            ]));
+
+            if ($user) {
+                // Mengambil ID pengguna yang baru saja dibuat
+                $userId = $user->id;
+
+                // Membuat kolektor dan mengaitkannya dengan pengguna
+                $collector = Collectors::create([
+                    'user_id' => $userId
+                ]);
+
+                return response()->json([
+                    'success' => 201,
+                    'message' => 'YOUR REGISTRATION IS SUCCESSFUL!',
+                    'user' => $user,
+                    'collector' => $collector
                 ]);
             } else {
                 return response()->json([

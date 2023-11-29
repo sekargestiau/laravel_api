@@ -27,26 +27,34 @@ use App\Http\Controllers\WasteController;
 Route::post('login', [AuthenticationController::class,'loginApi']); // http://127.0.0.1:8000/api/login
 Route::post('register', [AuthenticationController::class,'registerApi']); // http://127.0.0.1:8000/api/register
 Route::get('logout', [AuthenticationController::class,'logoutApi'])->middleware(['auth:sanctum']); // http://127.0.0.1:8000/api/logout
+Route::post('register-collector', [AuthenticationController::class,'registerApi_Collector']); // http://127.0.0.1:8000/api/register
+
 
 // ROUTE USERS
 Route::get('index-user', [UserController::class,'index'])->middleware(['auth:sanctum']); // http://127.0.0.1:8000/api/index
 Route::put('update-profile/{id}/update', [UserController::class,'update']); // http://127.0.0.1:8000/api/update-profile  + middleware
 
 // ROUTE COLLECTORS
-Route::put('update-currloc/{id}/update', [CollectorController::class,'update']); // http://127.0.0.1:8000/api/update-profile  + middleware
-Route::post('update-currloc/{id}/update', [CollectorController::class,'update']); // http://127.0.0.1:8000/api/update-profile  + middleware
-Route::get('index', [CollectorController::class,'index']); // http://127.0.0.1:8000/api/update-profile  + middleware
+Route::put('update-currloc/{id}/update', [CollectorController::class,'update_currloc']); // http://127.0.0.1:8000/api/update-profile  + middleware
+Route::put('update-droploc/{id}/update', [CollectorController::class,'update_droploc']); // http://127.0.0.1:8000/api/update-profile  + middleware
+Route::post('create-currloc', [CollectorController::class,'store_currloc']); // http://127.0.0.1:8000/api/update-profile  + middleware
+Route::post('create-droploc', [CollectorController::class,'store_droploc']); // http://127.0.0.1:8000/api/update-profile  + middleware
+Route::post('create-dropcurr', [CollectorController::class,'store_dropcurr']); // http://127.0.0.1:8000/api/update-profile  + middleware
+Route::get('index-collectors', [CollectorController::class,'index']); // http://127.0.0.1:8000/api/update-profile  + middleware
+Route::get('collector/{id}', [CollectorController::class, 'show']);
+Route::get('collector-detail', [CollectorController::class, 'show_detail']);
+
 
 // ROUTE CONTENTS
 Route::get('index-content', [ContentController::class,'index']); // http://127.0.0.1:8000/api/index-content
-Route::get('contents/{id}', [ContentController::class, 'show']);
+Route::get('content/{id}', [ContentController::class, 'show']);
 Route::put('update-content/{id}/update', [ContentController::class,'update']); // http://127.0.0.1:8000/api/update-profile  + middleware
 Route::delete('delete-content/{id}', [ContentController::class, 'destroy']);
 Route::post('create-content', [ContentController::class,'store']); // http://127.0.0.1:8000/api/create-content
 
 // ROUTE ORDERS
 Route::post('create-order', [OrderController::class,'store']); // http://127.0.0.1:8000/api/register
-Route::get('orders/{id}', [OrderController::class,'show'])->middleware(['auth:sanctum']); // http://127.0.0.1:8000/api/index
+Route::get('order/{id}', [OrderController::class,'show'])->middleware(['auth:sanctum']); // http://127.0.0.1:8000/api/index
 
 //create
 Route::post('create-waste', [WasteController::class,'store']); // http://127.0.0.1:8000/api/create-waste + middleware
