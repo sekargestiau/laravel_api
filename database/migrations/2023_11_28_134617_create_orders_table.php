@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('collector_id')->unsigned();
             $table->string('waste_type');
             $table->integer('waste_qty');
             $table->string('user_notes');
@@ -27,14 +26,10 @@ return new class extends Migration
             $table->dateTime('pickup_datetime');
             $table->double('pickup_longitude');
             $table->double('pickup_latitude');
-            $table->double('current_latitude');
-            $table->double('current_longitude');
         });
 
         Schema::table('orders',function(Blueprint $table){
             $table->foreign('user_id')->references('id')->on('users')
-            ->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('collector_id')->references('id')->on('users')
             ->onDelete('cascade')->onUpdate('cascade');
         });
     }

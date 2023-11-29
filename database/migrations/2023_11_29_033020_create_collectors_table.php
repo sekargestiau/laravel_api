@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wastes', function (Blueprint $table) {
+        Schema::create('collectors', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->bigInteger('user_id')->unsigned();
-            $table->string('waste_name');
-            $table->string('waste_type');
-            $table->bigInteger('waste_qty');
-            $table->string('pickup_coordinat');
+            $table->double('drop_latitude');
+            $table->double('drop_longitude');
+            $table->double('current_latitude');
+            $table->double('current_longitude');
         });
 
-        Schema::table('wastes',function(Blueprint $table){
+        Schema::table('collectors',function(Blueprint $table){
             $table->foreign('user_id')->references('id')->on('users')
             ->onDelete('cascade')->onUpdate('cascade');
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wastes');
+        Schema::dropIfExists('collectors');
     }
 };
