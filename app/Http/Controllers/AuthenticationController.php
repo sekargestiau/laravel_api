@@ -22,11 +22,11 @@ class AuthenticationController extends Controller
     protected function registerApi(Request $request)
     {
         $validated = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
+            'fname' => ['required', 'string', 'max:255'],
+            'lname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
-            'user_phone' => ['required', 'string'],
-            'user_address' => ['required', 'string'],
+            'phone' => ['required', 'string'],
         ]);
 
         if ($validated->fails()) {
@@ -37,7 +37,7 @@ class AuthenticationController extends Controller
             ]);
         } else {
             $data = $request->all();
-            $data['user_type'] = 'user';
+            $data['role'] = 'user';
 
             $user = User::create(array_merge($data, [
                 'password' => bcrypt($request->password)
@@ -87,17 +87,6 @@ class AuthenticationController extends Controller
         return response()->json([
             'success' => 200,
             'message' => 'Logout successful!',
-        ], 200);
-    }
-
-    // function for home page after login
-    public function indexApi(){
-        $user = auth()->user();
-
-        return response()->json([
-            'success' => 200,
-            'message' => 'Data successfully retrieved!',
-            'data' => $user,
         ], 200);
     }
 

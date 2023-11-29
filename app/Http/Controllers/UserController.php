@@ -3,15 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
+    // function show user profile
+    public function index(){
+        $user = auth()->user();
+
+        $userData = [
+            'id' => $user->id,
+            'fname' => $user->fname,
+            'lname' => $user->lname,
+            'email' => $user->email,
+        ];
+
+        return response()->json([
+            'success' => 200,
+            'message' => 'Data successfully retrieved!',
+            'data' => $userData,
+        ], 200);;
     }
 
     /**
@@ -43,16 +64,40 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'fname'=>'required|string|max:255',
+            'lname'=>'required|string|max:255',
+            'phone'=>'required|string|max:255',
+        ]);
+
+        $user = User::find($id);
+        if($user){
+            $user->fname = $request->fname;
+            $user->lname = $request->lname;
+            $user->phone = $request->phone;
+            $user->save();
+
+            return response()->json([
+                'success' => 201,
+                'message' => 'YOUR UPDATE PROFILE IS SUCCESSFUL!',
+                'data' => $user,
+            ]);
+        }else{
+            return response()->json([
+                'fail' => 500,
+                'message' => 'YOUR UPDATE PROFILE IS FAILED!',
+            ]);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
