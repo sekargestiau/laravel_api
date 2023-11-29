@@ -9,4 +9,8 @@ class Contents extends Model
 {
     use HasFactory;
     protected $table = "contents";
+    protected $fillable = [
+        'content_title',
+        'content_text',
+    ];
 }

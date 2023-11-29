@@ -62,8 +62,23 @@ class ContentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'content_title' => 'required|string',
+            'content_text' => 'required|string',
+        ]);
+        
+        $content = Contents::create([
+            'content_title' => $request->content_title,
+            'content_text' => $request->content_text
+        ]);
+
+        return response()->json([
+            'success' => 201,
+            'message' => 'Content creation successful!',
+            'data' => $content,
+        ], 201);
     }
+
 
 
     /**
