@@ -41,7 +41,7 @@ Route::post('create-currloc', [CollectorController::class,'store_currloc']); // 
 Route::post('create-droploc', [CollectorController::class,'store_droploc']); // http://127.0.0.1:8000/api/update-profile  + middleware
 Route::post('create-dropcurr', [CollectorController::class,'store_dropcurr']); // http://127.0.0.1:8000/api/update-profile  + middleware
 Route::get('index-collectors', [CollectorController::class,'index']); // http://127.0.0.1:8000/api/update-profile  + middleware
-Route::get('collector/{id}', [CollectorController::class, 'show'])->middleware(['auth:sanctum']);
+Route::get('collector/{id}', [CollectorController::class, 'show'])->middleware(['auth:sanctum']); 
 Route::get('collector-detail', [CollectorController::class, 'show_detail']);
 
 
@@ -53,9 +53,10 @@ Route::delete('delete-content/{id}', [ContentController::class, 'destroy']);
 Route::post('create-content', [ContentController::class,'store']); // http://127.0.0.1:8000/api/create-content
 
 // ROUTE ORDERS
-Route::post('create-order', [OrderController::class,'store']); // http://127.0.0.1:8000/api/register
+Route::post('create-order', [OrderController::class,'store'])->middleware(['auth:sanctum']); // http://127.0.0.1:8000/api/register
 Route::get('order/{id}', [OrderController::class,'show'])->middleware(['auth:sanctum']); // http://127.0.0.1:8000/api/index
 Route::put('update-order-status/{id}/update', [OrderController::class,'update']); // http://127.0.0.1:8000/api/update-profile  + middleware
+Route::get('history-order', [OrderController::class,'show_history'])->middleware(['auth:sanctum']);
 
 //create
 Route::post('create-waste', [WasteController::class,'store']); // http://127.0.0.1:8000/api/create-waste + middleware

@@ -78,6 +78,7 @@ namespace App\Models{
  * @property string $pickup_datetime
  * @property float $pickup_longitude
  * @property float $pickup_latitude
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Orders newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Orders newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Orders query()

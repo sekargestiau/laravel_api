@@ -44,14 +44,14 @@ class OrderController extends Controller
             'pickup_fee' => 'required',
             'subtotal_fee' => 'required',
             'order_status' => 'required',
-            'order_datetime' => 'required|datetime',
-            'pickup_datetime' => 'required|datetime',
+            'order_datetime' => 'required|date',
+            'pickup_datetime' => 'required|date',
             'pickup_latitude' => 'required|numeric',
             'pickup_longitude' => 'required|numeric',
         ]);
         $user = auth()->user();        
         $content = Orders::create([
-            'id_user' => $user->id,
+            'user_id' => $user->id,
             'waste_type' => $request->waste_type,
             'waste_qty' => $request->waste_qty,
             'user_notes' => $request->user_notes,
@@ -90,6 +90,38 @@ class OrderController extends Controller
             return response()->json([
                 'fail' => 404,
                 'message' => 'Content not found!',
+            ], 404);
+        }
+    }
+
+    public function show_history()
+    {
+        $userId = Auth::user()->id;
+
+        $orders = Orders::with('user')
+                        ->where('user_id', $userId)
+                        ->where('order_status', 'DONE')
+                        ->get();
+
+        if ($orders->isNotEmpty()) {
+            $responseData = [];
+
+            foreach ($orders as $order) {
+                $responseData[] = [
+                    'user' => $order->user,
+                    'order_data' => $order,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data successfully retrieved!',
+                'data' => $responseData,
+            ], 200);
+        } else {
+            return response()->json([
+                'fail' => true,
+                'message' => 'Orders not found for the logged-in user!',
             ], 404);
         }
     }
