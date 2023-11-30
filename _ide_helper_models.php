@@ -18,11 +18,11 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $user_id
- * @property float $drop_latitude
- * @property float $drop_longitude
- * @property float $current_latitude
- * @property float $current_longitude
- * @property-read \App\Models\User $collectorsId
+ * @property float|null $drop_latitude
+ * @property float|null $drop_longitude
+ * @property float|null $current_latitude
+ * @property float|null $current_longitude
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Collectors newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Collectors newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Collectors query()

@@ -46,8 +46,8 @@ class OrderController extends Controller
             'order_status' => 'required',
             'order_datetime' => 'required|datetime',
             'pickup_datetime' => 'required|datetime',
-            'pickup_latitude' => 'required|double',
-            'pickup_longitude' => 'required|double',
+            'pickup_latitude' => 'required|numeric',
+            'pickup_longitude' => 'required|numeric',
         ]);
         $user = auth()->user();        
         $content = Orders::create([

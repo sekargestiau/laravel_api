@@ -18,7 +18,7 @@ class Collectors extends Model
         'current_longitude'
     ];
 
-    public function collectorsId()
+    public function user()
         {
         return $this->belongsTo(User::class, 'user_id');
         }

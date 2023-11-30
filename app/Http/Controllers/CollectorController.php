@@ -30,25 +30,53 @@ class CollectorController extends Controller
     }
 
     // function show content based on id
-    public function show()
+    public function show2($id)
     {
-        $userId = Auth::user()->id;
-
-        $collector = Collectors::where('user_id', $userId)->first();
+        
+        $collector = Collectors::with('user')
+                        ->find($id);
 
         if ($collector) {
             return response()->json([
-                'success' => 200,
+                'success' => true,
                 'message' => 'Data successfully retrieved!',
                 'data' => $collector,
             ], 200);
         } else {
             return response()->json([
-                'fail' => 404,
+                'fail' => true,
                 'message' => 'Collector not found!',
             ], 404);
         }
     }
+
+    public function show($id)
+    {
+        $userId = Auth::user()->id;
+
+        $collector = Collectors::with('user')
+                        ->where('id', $id)
+                        ->where('user_id', $userId)
+                        ->first();
+
+        if ($collector) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data successfully retrieved!',
+                'data user' => $collector->user,
+                'drop_latitude' => $collector->drop_latitude,
+                'drop_longitude' => $collector->drop_longitude,
+                'current_latitude' => $collector->current_latitude,
+                'current_longitude' => $collector->current_longitude, // Mengambil relasi 'user' dari collector
+            ], 200);
+        } else {
+            return response()->json([
+                'fail' => true,
+                'message' => 'Collector not found for the logged-in user!',
+            ], 404);
+        }
+    }
+
 
     public function show_detail()
     {
