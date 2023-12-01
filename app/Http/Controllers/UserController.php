@@ -23,8 +23,7 @@ class UserController extends Controller
 
         $userData = [
             'id' => $user->id,
-            'fname' => $user->fname,
-            'lname' => $user->lname,
+            'name' => $user->name,
             'email' => $user->email,
         ];
 
@@ -73,15 +72,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'fname'=>'required|string|max:255',
-            'lname'=>'required|string|max:255',
+            'name'=>'required|string|max:255',
             'phone'=>'required|string|max:255',
         ]);
 
         $user = User::find($id);
         if($user){
-            $user->fname = $request->fname;
-            $user->lname = $request->lname;
+            $user->name = $request->name;
             $user->phone = $request->phone;
             $user->save();
 

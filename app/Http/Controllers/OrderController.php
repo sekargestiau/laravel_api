@@ -43,22 +43,21 @@ class OrderController extends Controller
             'recycle_fee' => 'required',
             'pickup_fee' => 'required',
             'subtotal_fee' => 'required',
-            'order_status' => 'required',
             'order_datetime' => 'required|date',
             'pickup_datetime' => 'required|date',
             'pickup_latitude' => 'required|numeric',
             'pickup_longitude' => 'required|numeric',
         ]);
-        $user = auth()->user();        
+        $user = auth()->user();
         $content = Orders::create([
             'user_id' => $user->id,
+            'order_status' => 'PICK_UP',
             'waste_type' => $request->waste_type,
             'waste_qty' => $request->waste_qty,
             'user_notes' => $request->user_notes,
             'recycle_fee' => $request->recycle_fee,
             'pickup_fee' => $request->pickup_fee,
             'subtotal_fee' => $request->subtotal_fee,
-            'order_status' => $request->order_status,
             'order_datetime' => $request->order_datetime,
             'pickup_datetime' => $request->pickup_datetime,
             'pickup_latitude' => $request->pickup_latitude,
@@ -100,7 +99,7 @@ class OrderController extends Controller
 
         $orders = Orders::with('user')
                         ->where('user_id', $userId)
-                        ->where('order_status', 'DONE')
+                        ->where('order_status', 'DELIVERED')
                         ->get();
 
         if ($orders->isNotEmpty()) {
@@ -125,6 +124,39 @@ class OrderController extends Controller
             ], 404);
         }
     }
+
+    public function show_pickup()
+    {
+        $userId = Auth::user()->id;
+
+        $orders = Orders::with('user')
+                        ->where('user_id', $userId)
+                        ->where('order_status', 'PICK_UP') 
+                        ->get();
+
+        if ($orders->isNotEmpty()) {
+            $responseData = [];
+
+            foreach ($orders as $order) {
+                $responseData[] = [
+                    'user' => $order->user,
+                    'order_data' => $order,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data successfully retrieved!',
+                'data' => $responseData,
+            ], 200);
+        } else {
+            return response()->json([
+                'fail' => true,
+                'message' => 'Orders not found for the logged-in user with order_status = pick_up!',
+            ], 404);
+        }
+    }
+
 
     /**
      * Show the form for editing the specified resource.

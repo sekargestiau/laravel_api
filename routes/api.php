@@ -57,6 +57,7 @@ Route::post('create-order', [OrderController::class,'store'])->middleware(['auth
 Route::get('order/{id}', [OrderController::class,'show'])->middleware(['auth:sanctum']); // http://127.0.0.1:8000/api/index
 Route::put('update-order-status/{id}/update', [OrderController::class,'update']); // http://127.0.0.1:8000/api/update-profile  + middleware
 Route::get('history-order', [OrderController::class,'show_history'])->middleware(['auth:sanctum']);
+Route::get('pickup-order', [OrderController::class,'show_pickup'])->middleware(['auth:sanctum']);
 
 //create
 Route::post('create-waste', [WasteController::class,'store']); // http://127.0.0.1:8000/api/create-waste + middleware

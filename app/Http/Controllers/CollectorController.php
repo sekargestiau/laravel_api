@@ -67,7 +67,7 @@ class CollectorController extends Controller
                 'drop_latitude' => $collector->drop_latitude,
                 'drop_longitude' => $collector->drop_longitude,
                 'current_latitude' => $collector->current_latitude,
-                'current_longitude' => $collector->current_longitude, // Mengambil relasi 'user' dari collector
+                'current_longitude' => $collector->current_longitude, 
             ], 200);
         } else {
             return response()->json([

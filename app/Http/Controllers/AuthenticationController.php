@@ -23,8 +23,7 @@ class AuthenticationController extends Controller
     protected function registerApi(Request $request)
     {
         $validated = Validator::make($request->all(), [
-            'fname' => ['required', 'string', 'max:255'],
-            'lname' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'phone' => ['required', 'string'],
@@ -63,8 +62,7 @@ class AuthenticationController extends Controller
     protected function registerApi_Collector(Request $request)
     {
         $validated = Validator::make($request->all(), [
-            'fname' => ['required', 'string', 'max:255'],
-            'lname' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'phone' => ['required', 'string'],
@@ -80,16 +78,13 @@ class AuthenticationController extends Controller
             $data = $request->all();
             $data['role'] = 'collector';
 
-            // Membuat pengguna
             $user = User::create(array_merge($data, [
                 'password' => bcrypt($request->password)
             ]));
 
             if ($user) {
-                // Mengambil ID pengguna yang baru saja dibuat
                 $userId = $user->id;
 
-                // Membuat kolektor dan mengaitkannya dengan pengguna
                 $collector = Collectors::create([
                     'user_id' => $userId
                 ]);

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->bigInteger('user_id')->unsigned();
-            $table->double('drop_latitude');
-            $table->double('drop_longitude');
-            $table->double('current_latitude');
-            $table->double('current_longitude');
+            $table->double('drop_latitude')->nullable();
+            $table->double('drop_longitude')->nullable();
+            $table->double('current_latitude')->nullable();
+            $table->double('current_longitude')->nullable();
         });
 
         Schema::table('collectors',function(Blueprint $table){
